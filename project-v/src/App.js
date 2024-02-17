@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import './spotify.js';
 import './App.css';
 
 function App() {
@@ -16,3 +16,4 @@ function App() {
 }
 
 export default App;
+
