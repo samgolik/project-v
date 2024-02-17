@@ -53,22 +53,26 @@ function App() {
     }
   }
 
-  const fetchSongData = async (token, track_id) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/audio-features/${track_id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
+  const fetchSongData = async (token, track_ids) => {
+    for (const track of track_ids) {
+      let track_id = track.id
+      try {
+        const response = await fetch(`${API_BASE_URL}/audio-features/${track_id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        if (response.ok) {
+          const data = await response.json()
+          console.log(data)
+        } else {
+          console.error('Failed to fetch song data:', response.statusText)
         }
-      })
-      if (response.ok) {
-        const data = await response.json()
-        console.log(data)
-      } else {
-        console.error('Failed to fetch song data:', response.statusText)
+      } catch (error) {
+        console.error('Error fetching song data:', error)
       }
-    } catch (error) {
-      console.error('Error fetching song data:', error)
     }
+    
   }
 
   const fetchTopSongs = async (token) => {
@@ -82,7 +86,7 @@ function App() {
         const data = await response.json()
         setTopSongs(data.items)
         
-        fetchSongData(token, data.items[0].id)
+        fetchSongData(token, data.items)
       } else {
         console.error('Failed to fetch top songs:', response.statusText)
       }
